@@ -24,5 +24,7 @@ namespace UserService.Model
 
         }
 
+        public DbSet<User> Users { get; set; }
+
     }
 }

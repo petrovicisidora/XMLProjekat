@@ -24,5 +24,7 @@ namespace AccommodationService.Model
 
         }
 
+        public DbSet<Accomodation> Accommodations { get; set; }
+
     }
 }

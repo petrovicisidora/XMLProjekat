@@ -24,5 +24,9 @@ namespace FlightService.Model
 
         }
 
+        public DbSet<Airport> Airports { get; set; }
+        public DbSet<Flight> Flights { get; set; }
+        public DbSet<Ticket> Tickets { get; set; }
+
     }
 }

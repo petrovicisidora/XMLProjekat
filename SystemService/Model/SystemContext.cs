@@ -24,5 +24,8 @@ namespace SystemService.Model
 
         }
 
+        public DbSet<City> Cities { get; set; }
+        public DbSet<Reservations> Reservations { get; set; }
+
     }
 }
