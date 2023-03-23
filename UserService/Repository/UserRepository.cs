@@ -13,5 +13,16 @@ namespace UserService.Repository
         {
 
         }
+
+        public User GetUserWithEmail(string email)
+        {
+            return UserContext.Users.Where(x => x.Email == email && !x.Deleted).SingleOrDefault();
+        }
+
+        public User Get(long Id)
+        {
+            return UserContext.Users.Where(x => x.Id == Id && !x.Deleted).SingleOrDefault();
+        }
+
     }
 }

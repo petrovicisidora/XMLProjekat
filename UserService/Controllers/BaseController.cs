@@ -74,8 +74,7 @@ namespace UserService.Controllers
         {
             string email = HttpContext.User.Claims.FirstOrDefault(c => c.Type == "Email")?.Value;
 
-            // return _userService.GetUserWithEmail(email);
-            return null;
+            return _userService.GetUserWithEmail(email);
         }
 
 
