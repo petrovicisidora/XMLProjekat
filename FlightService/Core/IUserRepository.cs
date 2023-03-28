@@ -6,8 +6,8 @@ using System.Threading.Tasks;
 
 namespace FlightService.Core
 {
-    public interface IAirportRepository : IBaseRepository<Airport>
+    public interface IUserRepository : IBaseRepository<User>
     {
-        Airport Get(long id);
+        User GetUserWithEmail(string email);
     }
 }

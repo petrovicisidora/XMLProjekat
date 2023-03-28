@@ -8,5 +8,7 @@ namespace FlightService.Core
 {
     public interface ITicketRepository : IBaseRepository<Ticket>
     {
+
+        Ticket Get(long id);
     }
 }

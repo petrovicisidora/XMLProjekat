@@ -18,6 +18,11 @@ namespace FlightService.Repository
             get { return _context as FlightContext; }
         }
 
+        public UserContext UserContext
+        {
+            get { return _context as UserContext; }
+        }
+
         public BaseRepository(DbContext context)
         {
             _context = context;

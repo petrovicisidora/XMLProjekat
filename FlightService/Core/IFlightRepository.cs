@@ -8,5 +8,6 @@ namespace FlightService.Core
 {
     public interface IFlightRepository : IBaseRepository<Flight>
     {
+        Flight Get(long id);
     }
 }

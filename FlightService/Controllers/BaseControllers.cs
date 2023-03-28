@@ -14,10 +14,12 @@ namespace FlightService.Controllers
     {
         protected ProjectConfiguration _configuration;
         protected BaseService<TEntity> _baseService;
+        protected IUserService _userService;
 
-        public BaseController(ProjectConfiguration configuration)
+        public BaseController(ProjectConfiguration configuration, IUserService userService)
         {
             _configuration = configuration;
+            _userService = userService;
             _baseService = new BaseService<TEntity>(configuration);
         }
 

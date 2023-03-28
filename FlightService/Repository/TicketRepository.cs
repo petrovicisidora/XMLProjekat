@@ -13,5 +13,10 @@ namespace FlightService.Repository
         {
 
         }
+
+        public Ticket Get(long Id)
+        {
+            return FlightContext.Tickets.Where(x => x.Id == Id && !x.Deleted).SingleOrDefault();
+        }
     }
 }

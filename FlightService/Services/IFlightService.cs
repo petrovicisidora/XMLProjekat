@@ -1,11 +1,17 @@
-﻿using System;
+﻿using FlightService.Model;
+using FlightService.Model.dto;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 
 namespace FlightService.Services
 {
-    interface IFlightService
+    public interface IFlightService
     {
+        IEnumerable<Flight> GetAll();
+        Flight Get(long Id);
+        Flight Delete(long id);
+        Flight Edit(FlightDTO flightDTO);
     }
 }
