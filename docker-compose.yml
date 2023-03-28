@@ -1,0 +1,50 @@
+version: "3.3"
+services:
+  gateway:    
+    container_name: gateway
+    build:      
+      dockerfile: ./Gateway/Dockerfile
+    depends_on: [ mssql ]        
+    ports:
+      - "8085:80"
+  accommodation_service:    
+    container_name: accommodation_service
+    build:      
+      dockerfile: ./AccommodationService/Dockerfile
+    depends_on: [ mssql ]        
+    ports:
+      - "8081:80"
+  flight_service:    
+    container_name: flight_service
+    build:      
+      dockerfile: ./FlightService/Dockerfile
+    depends_on: [ mssql ]        
+    ports:
+      - "8082:80"
+  system_service:    
+    container_name: system_service
+    build:      
+      dockerfile: ./SystemService/Dockerfile
+    depends_on: [ mssql ]        
+    ports:
+      - "8083:80"
+  user_service:    
+    container_name: user_service
+    build:      
+      dockerfile: ./UserService/Dockerfile
+    depends_on: [ mssql ]        
+    ports:
+      - "8084:80"
+  mssql:
+    image: "mcr.microsoft.com/mssql/server"
+    container_name: mssql
+    hostname: mssql
+    environment:
+      SA_PASSWORD: "Pass123!"
+      ACCEPT_EULA: "Y"
+    restart: unless-stopped    
+    ports:
+      # So we can access the database
+      # From a tool like JetBrains Rider
+      # Optional for this demo
+      - "11433:1433" 	

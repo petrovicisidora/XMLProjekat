@@ -10,7 +10,6 @@ namespace FlightService.Repository
     public class UnitOfWork : IUnitOfWork
     {
         private readonly FlightContext _context;
-        private readonly UserContext _contextu;
 
         private Dictionary<string, dynamic> _repositories;
 
@@ -20,12 +19,6 @@ namespace FlightService.Repository
             Flights = new FlightRepository(_context);
             Airports = new AirportRepository(_context);
             Tickets = new TicketRepository(_context);
-        }
-
-        public UnitOfWork(UserContext contextu)
-        {
-            _contextu = contextu;
-            Users = new UserRepository(_contextu);
         }
 
         public IFlightRepository Flights { get; private set; }
