@@ -29,5 +29,10 @@ namespace FlightService.Model
         public DbSet<Ticket> Tickets { get; set; }
         public DbSet<User> Users { get; set; }
 
+
+        protected override void OnConfiguring(DbContextOptionsBuilder optionBuilder)
+        {
+            optionBuilder.UseSqlServer("Server=mssql;Database=flight;User=sa;Password=A&VeryComplex123Password");
+        }
     }
 }

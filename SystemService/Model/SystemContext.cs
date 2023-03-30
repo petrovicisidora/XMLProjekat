@@ -27,5 +27,10 @@ namespace SystemService.Model
         public DbSet<City> Cities { get; set; }
         public DbSet<Reservations> Reservations { get; set; }
 
+        protected override void OnConfiguring(DbContextOptionsBuilder optionBuilder)
+        {
+            optionBuilder.UseSqlServer("Server=mssql;Database=system;User=sa;Password=A&VeryComplex123Password");
+        }
+
     }
 }

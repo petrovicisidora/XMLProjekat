@@ -26,5 +26,10 @@ namespace UserService.Model
 
         public DbSet<User> Users { get; set; }
 
+        protected override void OnConfiguring(DbContextOptionsBuilder optionBuilder)
+        {
+            optionBuilder.UseSqlServer("Server=mssql;Database=user;User=sa;Password=A&VeryComplex123Password");
+        }
+
     }
 }
