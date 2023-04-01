@@ -7,7 +7,8 @@ namespace FlightService.Model.dto
 {
     public class AirportDTO : Entity
     {
-        public long CityID { get; set; }
+        string Id { get; set; }
+        public string CityID { get; set; }
         public string Name { get; set; }
     }
 }

@@ -9,7 +9,7 @@ using System.Threading.Tasks;
 
 namespace FlightService.Services
 {
-    public class AirportService : BaseService<Airport>, IAirportService
+    public class AirportService : IAirportService
     {
         private readonly ProjectConfiguration _configuration;
 
@@ -23,7 +23,7 @@ namespace FlightService.Services
         {
             try
             {
-                using UnitOfWork unitOfWork = new UnitOfWork(new FlightContext());
+                using UnitOfWork unitOfWork = new UnitOfWork(_configuration);
 
                 return unitOfWork.Airports.GetAll();
             }
@@ -33,11 +33,11 @@ namespace FlightService.Services
             }
         }
 
-        public override Airport Get(long Id)
+        public Airport Get(string Id)
         {
             try
             {
-                using UnitOfWork unitOfWork = new UnitOfWork(new FlightContext());
+                using UnitOfWork unitOfWork = new UnitOfWork(_configuration);
 
                 return unitOfWork.Airports.Get(Id);
             }
@@ -49,24 +49,19 @@ namespace FlightService.Services
 
         
 
-        public Airport Delete(long id)
+        public bool Delete(string id)
         {
             try
             {
-                using UnitOfWork unitOfWork = new UnitOfWork(new FlightContext());
-                Airport airport = unitOfWork.Airports.Get(id);
+                using UnitOfWork unitOfWork = new UnitOfWork(_configuration);
+                
+                unitOfWork.Airports.Delete(id);
 
-
-                airport.Deleted = true;
-
-                unitOfWork.Airports.Update(airport);
-                unitOfWork.Complete();
-
-                return airport;
+                return true;
             }
             catch (Exception e)
             {
-                return null;
+                return false;
             }
         }
 
@@ -74,14 +69,13 @@ namespace FlightService.Services
         {
             try
             {
-                using UnitOfWork unitOfWork = new UnitOfWork(new FlightContext());
+                using UnitOfWork unitOfWork = new UnitOfWork(_configuration);
                 Airport airport = unitOfWork.Airports.Get(airportDTO.Id);
 
-                airportDTO.CityID = airport.CityID;
-                airportDTO.Name = airport.Name;
+                airport.CityID = airportDTO.CityID;
+                airport.Name = airportDTO.Name;
                
                 unitOfWork.Airports.Update(airport);
-                unitOfWork.Complete();
 
                 return airport;
             }

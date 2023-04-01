@@ -6,9 +6,12 @@ using System.Threading.Tasks;
 
 namespace FlightService.Core
 {
-    public interface ITicketRepository : IBaseRepository<Ticket>
+    public interface ITicketRepository
     {
 
-        Ticket Get(long id);
+        Ticket Get(string id);
+        IEnumerable<Ticket> GetAll();
+        void Delete(string id);
+        void Update(Ticket ticket);
     }
 }

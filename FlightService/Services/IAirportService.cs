@@ -10,8 +10,8 @@ namespace FlightService.Services
     public interface IAirportService
     {
         IEnumerable<Airport> GetAll();
-        Airport Get(long Id);
-        Airport Delete(long id);
+        Airport Get(string Id);
+        bool Delete(string id);
         Airport Edit(AirportDTO airportDTO);
     }
 }

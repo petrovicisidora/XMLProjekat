@@ -6,8 +6,11 @@ using System.Threading.Tasks;
 
 namespace FlightService.Core
 {
-    public interface IAirportRepository : IBaseRepository<Airport>
+    public interface IAirportRepository
     {
-        Airport Get(long id);
+        Airport Get(string id);
+        IEnumerable<Airport> GetAll();
+        void Delete(string id);
+        void Update(Airport airport);
     }
 }

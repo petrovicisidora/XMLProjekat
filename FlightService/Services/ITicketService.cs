@@ -10,8 +10,8 @@ namespace FlightService.Services
     public interface ITicketService
     {
         IEnumerable<Ticket> GetAll();
-        Ticket Get(long Id);
-        Ticket Delete(long id);
+        Ticket Get(string Id);
+        Boolean Delete(string id);
         Ticket Edit(TicketDTO ticketDTO);
     }
 }

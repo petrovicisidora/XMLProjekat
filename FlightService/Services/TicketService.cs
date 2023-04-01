@@ -9,7 +9,7 @@ using System.Threading.Tasks;
 
 namespace FlightService.Services
 {
-    public class TicketService : BaseService<Ticket>, ITicketService
+    public class TicketService : ITicketService
     {
         private readonly ProjectConfiguration _configuration;
 
@@ -23,7 +23,7 @@ namespace FlightService.Services
         {
             try
             {
-                using UnitOfWork unitOfWork = new UnitOfWork(new FlightContext());
+                using UnitOfWork unitOfWork = new UnitOfWork(_configuration);
 
                 return unitOfWork.Tickets.GetAll();
             }
@@ -33,11 +33,11 @@ namespace FlightService.Services
             }
         }
 
-        public override Ticket Get(long Id)
+        public Ticket Get(string Id)
         {
             try
             {
-                using UnitOfWork unitOfWork = new UnitOfWork(new FlightContext());
+                using UnitOfWork unitOfWork = new UnitOfWork(_configuration);
 
                 return unitOfWork.Tickets.Get(Id);
             }
@@ -48,24 +48,20 @@ namespace FlightService.Services
         }
 
 
-        public Ticket Delete(long id)
+
+        public bool Delete(string id)
         {
             try
             {
-                using UnitOfWork unitOfWork = new UnitOfWork(new FlightContext());
-                Ticket ticket = unitOfWork.Tickets.Get(id);
+                using UnitOfWork unitOfWork = new UnitOfWork(_configuration);
 
+                unitOfWork.Tickets.Delete(id);
 
-                ticket.Deleted = true;
-
-                unitOfWork.Tickets.Update(ticket);
-                unitOfWork.Complete();
-
-                return ticket;
+                return true;
             }
             catch (Exception e)
             {
-                return null;
+                return false;
             }
         }
 
@@ -73,18 +69,16 @@ namespace FlightService.Services
         {
             try
             {
-                using UnitOfWork unitOfWork = new UnitOfWork(new FlightContext());
+                using UnitOfWork unitOfWork = new UnitOfWork(_configuration);
                 Ticket ticket = unitOfWork.Tickets.Get(ticketDTO.Id);
 
-                ticketDTO.Airport = ticket.Airport;
-                ticketDTO.PassengerID = ticket.PassengerID;
-                ticketDTO.IsReturning = ticket.IsReturning;
-                ticketDTO.OneWayFlight = ticket.OneWayFlight;
-                ticketDTO.ReturningFlight = ticket.ReturningFlight;
-
+                ticket.Airport = ticketDTO.Airport;
+                ticket.PassengerID = ticketDTO.PassengerID;
+                ticket.IsReturning = ticketDTO.IsReturning;
+                ticket.OneWayFlight = ticketDTO.OneWayFlight;
+                ticket.ReturningFlight = ticketDTO.ReturningFlight;
 
                 unitOfWork.Tickets.Update(ticket);
-                unitOfWork.Complete();
 
                 return ticket;
             }

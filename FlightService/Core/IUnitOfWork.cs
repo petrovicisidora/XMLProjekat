@@ -7,7 +7,6 @@ namespace FlightService.Core
 {
     interface IUnitOfWork : IDisposable
     {
-        int Complete();
         void Dispose();
     }
 }

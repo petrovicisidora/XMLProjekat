@@ -29,7 +29,7 @@ namespace SystemService.Model
 
         protected override void OnConfiguring(DbContextOptionsBuilder optionBuilder)
         {
-            optionBuilder.UseSqlServer("Server=mssql;Database=system;User=sa;Password=A&VeryComplex123Password");
+            optionBuilder.UseSqlServer("Data Source=mssql,1433;Initial Catalog=system;User ID=sa;Password=A&VeryComplex123Password");
         }
 
     }

@@ -9,7 +9,7 @@ using System.Threading.Tasks;
 
 namespace FlightService.Services
 {
-    public class FlightService : BaseService<Flight>, IFlightService
+    public class FlightService : IFlightService
     {
         private readonly ProjectConfiguration _configuration;
 
@@ -22,7 +22,7 @@ namespace FlightService.Services
         {
             try
             {
-                using UnitOfWork unitOfWork = new UnitOfWork(new FlightContext());
+                using UnitOfWork unitOfWork = new UnitOfWork(_configuration);
 
                 return unitOfWork.Flights.GetAll();
             }
@@ -32,11 +32,11 @@ namespace FlightService.Services
             }
         }
 
-        public override Flight Get(long Id)
+        public Flight Get(string Id)
         {
             try
             {
-                using UnitOfWork unitOfWork = new UnitOfWork(new FlightContext());
+                using UnitOfWork unitOfWork = new UnitOfWork(_configuration);
 
                 return unitOfWork.Flights.Get(Id);
             }
@@ -47,24 +47,20 @@ namespace FlightService.Services
         }
 
 
-        public Flight Delete(long id)
+
+        public bool Delete(string id)
         {
             try
             {
-                using UnitOfWork unitOfWork = new UnitOfWork(new FlightContext());
-                Flight flight = unitOfWork.Flights.Get(id);
+                using UnitOfWork unitOfWork = new UnitOfWork(_configuration);
 
+                unitOfWork.Flights.Delete(id);
 
-                flight.Deleted = true;
-
-                unitOfWork.Flights.Update(flight);
-                unitOfWork.Complete();
-
-                return flight;
+                return true;
             }
             catch (Exception e)
             {
-                return null;
+                return false;
             }
         }
 
@@ -72,20 +68,18 @@ namespace FlightService.Services
         {
             try
             {
-                using UnitOfWork unitOfWork = new UnitOfWork(new FlightContext());
+                using UnitOfWork unitOfWork = new UnitOfWork(_configuration);
                 Flight flight = unitOfWork.Flights.Get(flightDTO.Id);
 
-                flightDTO.AirportDestination = flight.AirportDestination;
-                flightDTO.AirportDeparture = flight.AirportDeparture;
-                flightDTO.DepartureTime = flight.DepartureTime;
-                flightDTO.ArrivalTime = flight.ArrivalTime;
-                flightDTO.Duration = flight.Duration;
-                flightDTO.TicketPrice = flight.TicketPrice;
-                flightDTO.Capacity = flight.Capacity;
-
+                flight.AirportDestination = flightDTO.AirportDestination;
+                flight.AirportDeparture = flightDTO.AirportDeparture;
+                flight.DepartureTime = flightDTO.DepartureTime;
+                flight.ArrivalTime = flightDTO.ArrivalTime;
+                flight.Duration = flightDTO.Duration;
+                flight.TicketPrice = flightDTO.TicketPrice;
+                flight.Capacity = flightDTO.Capacity;
 
                 unitOfWork.Flights.Update(flight);
-                unitOfWork.Complete();
 
                 return flight;
             }
@@ -93,7 +87,6 @@ namespace FlightService.Services
             {
                 return null;
             }
-
 
         }
     }

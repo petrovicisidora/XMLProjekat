@@ -1,4 +1,5 @@
-﻿using FlightService.Model;
+﻿using FlightService.Configuration;
+using FlightService.Model;
 using FlightService.Repository;
 using System;
 using System.Collections.Generic;
@@ -7,8 +8,13 @@ using System.Threading.Tasks;
 
 namespace FlightService.Services
 {
-    public class UserService
+    public class UserService : IUserService
     {
+        private readonly ProjectConfiguration _configuration;
+
+        public UserService(ProjectConfiguration configuration) { _configuration = configuration; }
+
+
         public User Registration(string email, string password, string name, string surname, string ssn, string phoneNumber)
         {
             try
@@ -18,7 +24,7 @@ namespace FlightService.Services
                     return null;
                 }
 
-                using UnitOfWork unitOfWork = new UnitOfWork(new FlightContext());
+                using UnitOfWork unitOfWork = new UnitOfWork(_configuration);
 
                 User user = unitOfWork.Users.GetUserWithEmail(email);
 
@@ -29,7 +35,7 @@ namespace FlightService.Services
 
                 user = new User();
                 user.Email = email;
-                user.Password = password;
+                user.Password = BCrypt.Net.BCrypt.HashPassword(password) ;
                 user.Name = name;
                 user.Surname = surname;
                 user.PhoneNumber = phoneNumber;
@@ -37,10 +43,23 @@ namespace FlightService.Services
 
 
                 unitOfWork.Users.Add(user);
-                unitOfWork.Complete();
 
                 return user;
 
+            }
+            catch (Exception e)
+            {
+                return null;
+            }
+        }
+
+        public User GetUserWithEmail(string email)
+        {
+            try
+            {
+                using UnitOfWork unitOfWork = new UnitOfWork(_configuration);
+
+                return unitOfWork.Users.GetUserWithEmail(email);
             }
             catch (Exception e)
             {

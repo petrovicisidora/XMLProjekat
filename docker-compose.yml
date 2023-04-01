@@ -7,6 +7,8 @@ services:
     depends_on: [ mssql ]        
     ports:
       - "8085:80"
+    networks:
+      - database-network
   accommodation_service:    
     container_name: accommodation_service
     build:      
@@ -14,6 +16,17 @@ services:
     depends_on: [ mssql ]        
     ports:
       - "8081:80"
+    networks:
+      - database-network
+  flight_service:    
+    container_name: flight_service
+    build:      
+      dockerfile: ./FlightService/Dockerfile
+    depends_on: [ mssql ]        
+    ports:
+      - "8082:80"
+    networks:
+      - database-network
   system_service:    
     container_name: system_service
     build:      
@@ -21,6 +34,8 @@ services:
     depends_on: [ mssql ]        
     ports:
       - "8083:80"
+    networks:
+      - database-network
   user_service:    
     container_name: user_service
     build:      
@@ -28,8 +43,10 @@ services:
     depends_on: [ mssql ]        
     ports:
       - "8084:80"
+    networks:
+      - database-network
   mssql:
-    image: "mcr.microsoft.com/mssql/server"
+    image: "mcr.microsoft.com/azure-sql-edge"
     container_name: mssql
     hostname: mssql
     environment:
@@ -41,7 +58,23 @@ services:
       # From a tool like JetBrains Rider
       # Optional for this demo
       - "1433:1433" 	
+    networks:
+      - database-network
+  mongodb_container:
+    image: mongo:latest
+    environment:
+      MONGO_INITDB_ROOT_USERNAME: root
+      MONGO_INITDB_ROOT_PASSWORD: rootpassword
+    ports:
+      - 27017:27017
+    volumes:
+      - mongodb_data_container:/data/db
+    networks:
+      - database-network
+
+volumes:
+  mongodb_data_container:
 
 networks:
-  default:
-    name: an-external-network
+  database-network:
+    name: database-network

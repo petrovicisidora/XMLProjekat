@@ -32,7 +32,7 @@ namespace UserService
 
             services.AddDbContext<UserContext>(optionsBuilder =>
             {
-                optionsBuilder.UseSqlServer("Server=mssql;Database=user;User=sa;Password=A&VeryComplex123Password");
+                optionsBuilder.UseSqlServer("Data Source=mssql,1433;Initial Catalog=userDB;User ID=sa;Password=A&VeryComplex123Password");
             });
         }
 

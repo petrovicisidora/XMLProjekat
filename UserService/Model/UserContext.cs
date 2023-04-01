@@ -28,7 +28,7 @@ namespace UserService.Model
 
         protected override void OnConfiguring(DbContextOptionsBuilder optionBuilder)
         {
-            optionBuilder.UseSqlServer("Server=mssql;Database=user;User=sa;Password=A&VeryComplex123Password");
+            optionBuilder.UseSqlServer("Data Source=mssql,1433;Initial Catalog=userDB;User ID=sa;Password=A&VeryComplex123Password");
         }
 
     }
