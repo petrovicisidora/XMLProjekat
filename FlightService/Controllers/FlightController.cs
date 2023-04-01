@@ -49,5 +49,19 @@ namespace FlightService.Controllers
         {
             return Ok(_flightService.Edit(flightDTO));
         }
+
+        [Route("addflight")]
+        [HttpPost]
+        public IActionResult Registration(FlightDTO flightdto)
+        {
+            Flight flight = _flightService.Create(flightdto.AirportDestination, flightdto.AirportDeparture, flightdto.DepartureTime, flightdto.ArrivalTime, flightdto.Duration, flightdto.TicketPrice, flightdto.Capacity);
+
+            if (flight == null)
+            {
+                return BadRequest("Registration is not successful.");
+            }
+
+            return Ok(flight);
+        }
     }
 }

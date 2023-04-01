@@ -43,5 +43,10 @@ namespace FlightService.Repository
         {
             _flightCollection.ReplaceOne(x => x.Id == flight.Id, flight);
         }
+
+        public void Add(Flight flight)
+        {
+            _flightCollection.InsertOne(flight);
+        }
     }
 }

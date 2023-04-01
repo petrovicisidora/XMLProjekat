@@ -89,5 +89,32 @@ namespace FlightService.Services
             }
 
         }
+
+        public Flight Create(Airport airportdestination, Airport airportdeparture, DateTime departuretime, DateTime arrivaltime, string duration, double price, int capacity)
+        {
+            try
+            {
+                using UnitOfWork unitOfWork = new UnitOfWork(_configuration);
+
+                Flight flight = new Flight();
+                flight.AirportDestination = airportdestination;
+                flight.AirportDeparture = airportdeparture;
+                flight.DepartureTime = departuretime;
+                flight.ArrivalTime = arrivaltime;
+                flight.Duration = duration;
+                flight.TicketPrice = price;
+                flight.Capacity = capacity;
+
+
+                unitOfWork.Flights.Add(flight);
+
+                return flight;
+
+            }
+            catch (Exception e)
+            {
+                return null;
+            }
+        }
     }
 }

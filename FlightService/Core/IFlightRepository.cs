@@ -12,5 +12,7 @@ namespace FlightService.Core
         IEnumerable<Flight> GetAll();
         void Delete(string id);
         void Update(Flight flight);
+        void Add(Flight flight);
+
     }
 }
