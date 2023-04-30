@@ -7,8 +7,7 @@ using SystemService.Model;
 
 namespace SystemService.Services
 {
-    public class CityService : BaseService<City>
-    {
+    public class CityService : ICityService { 
         private readonly ProjectConfiguration _configuration;
 
         public CityService(ProjectConfiguration projectConfiguration)

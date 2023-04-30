@@ -7,11 +7,11 @@ namespace AccommodationService.Model
 {
     public class Accomodation : Entity
     {
-        public long CityID { get; set; }
-        public String Name { get; set; }
-        public long Price { get; set; }
-        public long Capacity { get; set; }
-        public Boolean Availability { get; set; }
+        public string CityID { get; set; }
+        public string Name { get; set; }
+        public string Price { get; set; }
+        public string Capacity { get; set; }
+        public string Availability { get; set; }
 
     }
 }

@@ -7,7 +7,7 @@ namespace SystemService.Core
 {
     interface IUnitOfWork : IDisposable
     {
-        int Complete();
+       
         void Dispose();
     }
 }

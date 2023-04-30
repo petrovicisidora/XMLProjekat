@@ -7,7 +7,7 @@ using SystemService.Model;
 
 namespace SystemService.Services
 {
-    public class ReservationService : BaseService<Reservations>
+    public class ReservationService : IReservationService
     {
         private readonly ProjectConfiguration _configuration;
 

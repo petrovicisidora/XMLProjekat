@@ -51,7 +51,7 @@ namespace UserService.Controllers
             return Ok(_userService.Get(id));
         }
 
-        [Route("/{id}")]
+        [Route("delete/{id}")]
         [HttpGet]
         public IActionResult Delete(long id)
         {

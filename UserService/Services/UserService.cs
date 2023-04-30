@@ -9,7 +9,7 @@ using UserService.Repository;
 
 namespace UserService.Services
 {
-    public class UserService : BaseService<User>, IUserService
+    public class UserService :IUserService
     {
         private readonly ProjectConfiguration _configuration;
 
@@ -22,7 +22,7 @@ namespace UserService.Services
         {
             try
             {
-                using UnitOfWork unitOfWork = new UnitOfWork(new UserContext());
+                using UnitOfWork unitOfWork = new UnitOfWork(_configuration);
 
                 return unitOfWork.Users.GetAll();
             }
@@ -36,7 +36,7 @@ namespace UserService.Services
         {
             try
             {
-                using UnitOfWork unitOfWork = new UnitOfWork(new UserContext());
+                using UnitOfWork unitOfWork = new UnitOfWork(_configuration);
 
                 return unitOfWork.Users.Get(Id);
             }
@@ -50,7 +50,7 @@ namespace UserService.Services
         {
             try
             {
-                using UnitOfWork unitOfWork = new UnitOfWork(new UserContext());
+                using UnitOfWork unitOfWork = new UnitOfWork(_configuration);
 
                 return unitOfWork.Users.GetUserWithEmail(email);
 
@@ -65,14 +65,14 @@ namespace UserService.Services
         {
             try
             {
-                using UnitOfWork unitOfWork = new UnitOfWork(new UserContext());
+                using UnitOfWork unitOfWork = new UnitOfWork(_configuration);
                 User user = unitOfWork.Users.Get(id);
 
 
                 user.Deleted = true;
 
                 unitOfWork.Users.Update(user);
-                unitOfWork.Complete();
+           
 
                 return user;
             }
@@ -84,28 +84,30 @@ namespace UserService.Services
 
         public User Edit(UserDTO userDTO)
         {
-            try
-            {
-                using UnitOfWork unitOfWork = new UnitOfWork(new UserContext());
-                User user = unitOfWork.Users.Get(userDTO.Id);
+            /*   try
+               {
+                   using UnitOfWork unitOfWork = new UnitOfWork(_configuration);
+                   User user = unitOfWork.Users.Get(userDTO.Id);
 
-                userDTO.Email = user.Email;
-                userDTO.Password = user.Password;
-                userDTO.Name = user.Name;
-                userDTO.Surname = user.Surname;
-                userDTO.PhoneNumber = user.PhoneNumber;
-                userDTO.SSN = user.SSN;
-               
+                   userDTO.Email = user.Email;
+                   userDTO.Password = user.Password;
+                   userDTO.Name = user.Name;
+                   userDTO.Surname = user.Surname;
+                   userDTO.PhoneNumber = user.PhoneNumber;
+                   userDTO.SSN = user.SSN;
 
-                unitOfWork.Users.Update(user);
-                unitOfWork.Complete();
 
-                return user;
-            }
-            catch (Exception e)
-            {
-                return null;
-            }
+                   unitOfWork.Users.Update(user);
+
+
+                   return user;
+               }
+               catch (Exception e)
+               {
+                   return null;
+               }*/
+            return null;
+
 
 
         }
@@ -119,7 +121,7 @@ namespace UserService.Services
                     return null;
                 }
 
-                using UnitOfWork unitOfWork = new UnitOfWork(new UserContext());
+                using UnitOfWork unitOfWork = new UnitOfWork(_configuration);
 
                 User user = unitOfWork.Users.GetUserWithEmail(email);
 
@@ -138,8 +140,7 @@ namespace UserService.Services
                 
 
                 unitOfWork.Users.Add(user);
-                unitOfWork.Complete();
-
+               
                 return user;
 
             }

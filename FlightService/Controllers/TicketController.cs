@@ -29,14 +29,14 @@ namespace FlightService.Controllers
             return Ok(_ticketService.GetAll());
         }
 
-        [Route("/{id}")]
+        [Route("ticket/{id}")]
         [HttpGet]
         public IActionResult Get(string id)
         {
             return Ok(_ticketService.Get(id));
         }
 
-        [Route("/{id}")]
+        [Route("delete/{id}")]
         [HttpGet]
         public IActionResult Delete(string id)
         {

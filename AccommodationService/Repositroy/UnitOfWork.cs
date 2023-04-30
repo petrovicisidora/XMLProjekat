@@ -1,4 +1,5 @@
-﻿using AccommodationService.Core;
+﻿using AccommodationService.Configuration;
+using AccommodationService.Core;
 using AccommodationService.Model;
 using System;
 using System.Collections.Generic;
@@ -9,56 +10,23 @@ namespace AccommodationService.Repositroy
 {
     public class UnitOfWork : IUnitOfWork
     {
-        private readonly AccommodationContext _context;
-
+        //vate readonly AccommodationContext _context;
+        private ProjectConfiguration projectConfiguration;
         private Dictionary<string, dynamic> _repositories;
 
-        public UnitOfWork(AccommodationContext context)
+        public UnitOfWork(ProjectConfiguration projectConfiguration)
         {
-            _context = context;
-            Accommodations = new AccommodationRepository(_context);
+            this.projectConfiguration = projectConfiguration;
+            Accommodations = new AccommodationRepository(projectConfiguration);
         }
 
         public IAccommodationRepository Accommodations { get; private set;  }
 
-        public IBaseRepository<TEntity> GetRepository<TEntity>() where TEntity : class
-        {
-            if (_repositories == null)
-            {
-                _repositories = new Dictionary<string, dynamic>();
-            }
-
-            string type = typeof(TEntity).Name;
-
-            if (_repositories.ContainsKey(type))
-            {
-                return (IBaseRepository<TEntity>)_repositories[type];
-            }
-
-            if (_repositories.ContainsKey(type))
-            {
-                return (IBaseRepository<TEntity>)_repositories[type];
-            }
-
-            Type repositoryType = typeof(BaseRepository<>);
-            _repositories.Add(type, Activator.CreateInstance(repositoryType.MakeGenericType(typeof(TEntity)), _context));
-
-            return (IBaseRepository<TEntity>)_repositories[type];
-        }
-
-        public AccommodationContext Context
-        {
-            get { return _context; }
-        }
-
-        public int Complete()
-        {
-            return _context.SaveChanges();
-        }
+      
 
         public void Dispose()
         {
-            _context.Dispose();
+           
         }
     }
 }

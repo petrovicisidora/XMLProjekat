@@ -1,4 +1,6 @@
+using AccommodationService.Configuration;
 using AccommodationService.Model;
+using AccommodationService.Services;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.HttpsPolicy;
@@ -28,23 +30,38 @@ namespace AccommodationService
         public void ConfigureServices(IServiceCollection services)
         {
             services.AddControllers();
+            services.AddSwaggerGen();
+            var config = new ProjectConfiguration();
+            Configuration.Bind("ProjectConfiguration", config);      //  <--- This
 
-            services.AddDbContext<AccommodationContext>(optionsBuilder =>
+            services.AddSingleton(config);
+
+            services.AddScoped<IAccommodationService, Services.AccommodationService>();
+            services.AddCors(o => o.AddPolicy("MyPolicy", builder =>
             {
-                optionsBuilder.UseSqlServer("Data Source=mssql,1433;Initial Catalog=accommodation;User ID=sa;Password=A&VeryComplex123Password");
-            });
+                builder.AllowAnyOrigin()
+                       .AllowAnyMethod()
+                       .AllowAnyHeader();
+            }));
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
-        public void Configure(IApplicationBuilder app, IWebHostEnvironment env, AccommodationContext dataContext)
+        public void Configure(IApplicationBuilder app, IWebHostEnvironment env)
         {
             if (env.IsDevelopment())
             {
                 app.UseDeveloperExceptionPage();
+                app.UseSwagger();
+                app.UseSwaggerUI();
             }
+            app.UseSwaggerUI(options =>
+            {
+                options.SwaggerEndpoint("/swagger/v1/swagger.json", "v1");
+                options.RoutePrefix = string.Empty;
+            });
 
+            app.UseCors("MyPolicy");
 
-            dataContext.Database.Migrate();
 
             app.UseHttpsRedirection();
 

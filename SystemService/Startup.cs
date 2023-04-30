@@ -11,7 +11,9 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using SystemService.Configuration;
 using SystemService.Model;
+using SystemService.Services;
 
 namespace SystemService
 {
@@ -29,22 +31,39 @@ namespace SystemService
         {
 
             services.AddControllers();
+            services.AddScoped<IReservationService, ReservationService>();
+            services.AddScoped<ICityService, CityService>();
+            services.AddSwaggerGen();
 
-            services.AddDbContext<SystemContext>(optionsBuilder =>
+            var config = new ProjectConfiguration();
+            Configuration.Bind("ProjectConfiguration", config);      //  <--- This
+
+            services.AddSingleton(config);
+            services.AddCors(o => o.AddPolicy("MyPolicy", builder =>
             {
-                optionsBuilder.UseSqlServer("Data Source=mssql,1433;Initial Catalog=system;User ID=sa;Password=A&VeryComplex123Password");
-            });
+                builder.AllowAnyOrigin()
+                       .AllowAnyMethod()
+                       .AllowAnyHeader();
+            }));
+
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
-        public void Configure(IApplicationBuilder app, IWebHostEnvironment env, SystemContext dataContext)
+        public void Configure(IApplicationBuilder app, IWebHostEnvironment env)
         {
             if (env.IsDevelopment())
             {
                 app.UseDeveloperExceptionPage();
+                app.UseSwagger();
+                app.UseSwaggerUI();
             }
+            app.UseSwaggerUI(options =>
+            {
+                options.SwaggerEndpoint("/swagger/v1/swagger.json", "v1");
+                options.RoutePrefix = string.Empty;
+            });
 
-            dataContext.Database.Migrate();
+            app.UseCors("MyPolicy");
 
             app.UseHttpsRedirection();
 
