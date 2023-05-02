@@ -53,7 +53,7 @@ namespace UserService.Repository
 
         public User GetUserWithEmail(string email)
         {
-            return null;
+            return _userCollection.Find(x => x.Email == email).FirstOrDefault();
         }
 
         public void Remove(User entity)

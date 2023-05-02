@@ -10,7 +10,7 @@ namespace UserService.Services
     public interface IUserService
     {
         User GetUserWithEmail(string email);
-        User Registration(string email, string password, string name, string surname, string ssn, string phoneNumber);
+        User Registration(string email, string password, string name, string surname, string city, UserType type);
         IEnumerable<User> GetAll();
         User Get(long Id);
         User Delete(long id);

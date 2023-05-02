@@ -112,11 +112,11 @@ namespace UserService.Services
 
         }
 
-        public User Registration(string email, string password, string name, string surname, string ssn, string phoneNumber)
+        public User Registration(string email, string password, string name, string surname, string city, UserType type)
         {
             try
             {
-                if (email == null || password == null || name == null || surname == null || phoneNumber == null || ssn == null)
+                if (email == null || password == null || name == null || surname == null || city == null )
                 {
                     return null;
                 }
@@ -132,11 +132,11 @@ namespace UserService.Services
 
                 user = new User();
                 user.Email = email;
-                user.Password = password;
+                user.Password = BCrypt.Net.BCrypt.HashPassword(password);
                 user.Name = name;
                 user.Surname = surname;
-                user.PhoneNumber = phoneNumber;
-                user.SSN = ssn;
+                user.City = city;
+                user.UserType = type;
                 
 
                 unitOfWork.Users.Add(user);

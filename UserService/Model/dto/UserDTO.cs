@@ -13,5 +13,6 @@ namespace UserService.Model.dto
         public string Surname { get; set; }
         public string PhoneNumber { get; set; }
         public string SSN { get; set; }
+        public UserType Type { get; set; }
     }
 }

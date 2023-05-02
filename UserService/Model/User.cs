@@ -11,10 +11,9 @@ namespace UserService.Model
     {
         public String Name { get; set; }
         public String Surname { get; set; }
-        public String SSN { get; set; }
+        public String City { get; set; }
         public String Email { get; set; }
         public String Password { get; set; }
-        public String PhoneNumber { get; set; }
         public UserType UserType { get; set;  }
 
 }

@@ -27,7 +27,7 @@ namespace UserService.Controllers
         [HttpPost]
         public IActionResult Registration(RegistrationDTO registration)
         {
-            User user = _userService.Registration(registration.Email, registration.Password, registration.Name, registration.Surname, registration.SSN, registration.PhoneNumber);
+            User user = _userService.Registration(registration.Email, registration.Password, registration.Name, registration.Surname, registration.City, registration.Type);
 
             if (user == null)
             {
