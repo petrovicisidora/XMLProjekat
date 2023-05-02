@@ -112,7 +112,7 @@ namespace UserService.Services
 
         }
 
-        public User Registration(string email, string password, string name, string surname, string city, UserType type)
+        public User Registration(string email, string password, string name, string surname, string city, string type)
         {
             try
             {
@@ -136,7 +136,15 @@ namespace UserService.Services
                 user.Name = name;
                 user.Surname = surname;
                 user.City = city;
-                user.UserType = type;
+                if (type == "G")
+                {
+                    user.UserType = UserType.G;
+                }
+                else
+                {
+                    user.UserType = UserType.H;
+                }
+              
                 
 
                 unitOfWork.Users.Add(user);

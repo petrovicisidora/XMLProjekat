@@ -12,7 +12,7 @@ namespace UserService.Model.dto
         public string Name { get; set; }
         public string Surname { get; set; }
         public string City { get; set; }
-        public UserType Type { get; set; }
+        public string Type { get; set; }
        
     }
 }
