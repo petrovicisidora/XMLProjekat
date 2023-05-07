@@ -1,18 +1,14 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
 
-namespace SystemService.Model
+namespace SystemService.Dtos
 {
-    public class Reservations : Entity
+    public class CreateReservationDto
     {
         public DateTime Start { get; set; }
         public DateTime End { get; set; }
         public int PricePerGuest { get; set; }
         public int PricePerAccomodation { get; set; }
-        public string GuestId { get; set; }
-        public string AccomodationId { get; set; }
         public int NumberOfPeople { get; set; }
+        public string AccmodationId { get; set; }
     }
 }

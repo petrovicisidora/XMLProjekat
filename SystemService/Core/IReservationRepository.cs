@@ -8,5 +8,7 @@ namespace SystemService.Core
 {
     public interface IReservationRepository : IBaseRepository<Reservations>
     {
+        IEnumerable<Reservations> GetByAccomodationId(string accomodationId);
+        Reservations Get(string id);
     }
 }

@@ -1,11 +1,14 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
+﻿using System.Collections.Generic;
+using SystemService.Dtos;
+using SystemService.Model;
 
 namespace SystemService.Services
 {
-    interface IReservationService
+    public interface IReservationService
     {
+        Reservations GetById(string reservationId)
+        void DeleteReservation(string id);
+        void CancelReservation(string reservationId);
+        IEnumerable<Reservations> Find(SearchReservationsDto dto);
     }
 }

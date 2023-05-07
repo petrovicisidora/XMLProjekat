@@ -36,6 +36,8 @@ namespace AccommodationService
 
             services.AddSingleton(config);
 
+            services.AddGrpc();
+
             services.AddScoped<IAccommodationService, Services.AccommodationService>();
             services.AddCors(o => o.AddPolicy("MyPolicy", builder =>
             {
@@ -72,6 +74,7 @@ namespace AccommodationService
             app.UseEndpoints(endpoints =>
             {
                 endpoints.MapControllers();
+                endpoints.MapGrpcService<AccomodationGrpcService>();
             });
         }
     }

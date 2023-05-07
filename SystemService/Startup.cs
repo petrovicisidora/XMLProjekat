@@ -33,6 +33,7 @@ namespace SystemService
             services.AddControllers();
             services.AddScoped<IReservationService, ReservationService>();
             services.AddScoped<ICityService, CityService>();
+            services.AddScoped<IAccomodationService, AccomodationService>();
             services.AddSwaggerGen();
 
             var config = new ProjectConfiguration();

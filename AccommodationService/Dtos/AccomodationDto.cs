@@ -1,11 +1,9 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
+﻿using AccommodationService.Model;
+using Microsoft.AspNetCore.Http;
 
-namespace AccommodationService.Model
+namespace AccommodationService.Dtos
 {
-    public class Accomodation : Entity
+    public class AccomodationDto
     {
         public string Name { get; set; }
         public int Price { get; set; }
@@ -15,9 +13,7 @@ namespace AccommodationService.Model
         public bool FreeParking { get; set; }
         public int MinCapacity { get; set; }
         public int MaxCapacity { get; set; }
-        public string ImagePath { get; set; }
-
-        public string Availability { get; set; }
+        public IFormFile Image { get; set; }
 
     }
 }

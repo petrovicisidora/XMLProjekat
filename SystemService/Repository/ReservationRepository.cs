@@ -1,4 +1,5 @@
-﻿using MongoDB.Driver;
+﻿using MongoDB.Bson;
+using MongoDB.Driver;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -45,14 +46,27 @@ namespace SystemService.Repository
             throw new NotImplementedException();
         }
 
+        public Reservations Get(string id)
+        {
+            var filter = Builders<Reservations>.Filter.Eq("_id", new ObjectId(id));
+            return _reservationCollection.Find(filter).FirstOrDefault();
+        }
+
         public IEnumerable<Reservations> GetAll()
         {
             throw new NotImplementedException();
         }
 
+        public IEnumerable<Reservations> GetByAccomodationId(string accomodationId)
+        {
+            var filter = Builders<Reservations>.Filter.Eq("accomodationId", accomodationId);
+            return _reservationCollection.Find(filter).ToEnumerable();
+        }
+
         public void Remove(Reservations entity)
         {
-            throw new NotImplementedException();
+            var filter = Builders<Reservations>.Filter.Eq("_id", new ObjectId(entity.Id));
+            _reservationCollection.DeleteOne(filter);
         }
 
         public void RemoveRange(IEnumerable<Reservations> entities)
@@ -72,7 +86,8 @@ namespace SystemService.Repository
 
         public void Update(Reservations entity)
         {
-            throw new NotImplementedException();
+            var filter = Builders<Reservations>.Filter.Eq("_id", new ObjectId(entity.Id));
+            _reservationCollection.ReplaceOne(filter, entity);
         }
     }
 }

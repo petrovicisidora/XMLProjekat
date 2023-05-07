@@ -1,6 +1,7 @@
 ﻿using AccommodationService.Configuration;
 using AccommodationService.Core;
 using AccommodationService.Model;
+using MongoDB.Bson;
 using MongoDB.Driver;
 using System;
 using System.Collections.Generic;
@@ -43,6 +44,12 @@ namespace AccommodationService.Repositroy
         public Accomodation Get(long id)
         {
             throw new NotImplementedException();
+        }
+
+        public Accomodation Get(string id)
+        {
+            var filter = Builders<Accomodation>.Filter.Eq("_id", new ObjectId(id));
+            return _accommodationCollection.Find(filter).FirstOrDefault();
         }
 
         public IEnumerable<Accomodation> GetAll()

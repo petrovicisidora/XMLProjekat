@@ -5,7 +5,7 @@ using System.Threading.Tasks;
 
 namespace AccommodationService.Core
 {
-    interface IUnitOfWork : IDisposable
+    public interface IUnitOfWork : IDisposable
     {
         void Dispose();
 

@@ -1,4 +1,5 @@
 ﻿using AccommodationService.Configuration;
+using AccommodationService.Dtos;
 using AccommodationService.Model;
 using AccommodationService.Services;
 using Microsoft.AspNetCore.Mvc;
@@ -21,12 +22,14 @@ namespace AccommodationService.Controllers
 
         }
 
-        [Route("add")]
+       
+
+        [Route("edit")]
         [HttpPost]
         public IActionResult Edit(Accomodation ticketDTO)
         {
 
-            Accomodation user = _accService.Edit(ticketDTO.CityID, ticketDTO.Availability, ticketDTO.Capacity,ticketDTO.Name,ticketDTO.Price);
+            Accomodation user = _accService.Edit(string.Empty, ticketDTO.Availability, ticketDTO.Price, ticketDTO.Name,string.Empty);
             if (user == null)
             {
                 return BadRequest("Registration is not successful.");

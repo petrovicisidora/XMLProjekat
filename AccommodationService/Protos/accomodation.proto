@@ -1,0 +1,20 @@
+﻿syntax = "proto3";
+
+package AccommodationService;
+
+service AccomodationGrpc {
+  rpc GetAccomodationInfo (AccomodationRequest) returns (AccomodationResponse);
+}
+
+message AccomodationRequest {
+  string id = 1;
+}
+
+message AccomodationResponse {
+  string name = 1;
+  string street = 2;
+  string city = 3;
+  string state = 4;
+  int32 minPrice = 5;
+  int32 maxPrice = 6;
+}
