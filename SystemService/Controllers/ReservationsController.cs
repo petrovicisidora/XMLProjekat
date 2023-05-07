@@ -19,7 +19,7 @@ namespace SystemService.Controllers
         private readonly IReservationService reservationService;
 
         public ReservationsController(
-            ProjectConfiguration configuration, 
+            ProjectConfiguration configuration,
             IReservationService reservationService)
             : base(configuration)
         {
@@ -29,8 +29,53 @@ namespace SystemService.Controllers
         [Route("")]
         [HttpGet]
         public IActionResult Search([FromBody] SearchReservationsDto dto)
-        { 
+        {
             return Ok();
+        }
+
+        [Route("add")]
+        [HttpPost]
+        public IActionResult Create([FromBody] CreateReservationDto dto)
+        {
+            Reservations reservation = null;
+            try
+            {
+                reservation = reservationService.CreateReservation(dto);
+                if (reservation == null)
+                {
+                    return BadRequest("Bad data sent.");
+                }
+            }
+            catch (ReservationAlreadyExistisException ex)
+            {
+                return BadRequest("Reservation already created.");
+            }
+            catch (Exception ex)
+            {
+                return StatusCode(500);
+            }
+
+            return Ok(reservation);
+        }
+
+        [Route("edit")]
+        [HttpPut]
+        public IActionResult Edit([FromBody] EditReservationDto dto)
+        {
+            try
+            {
+                reservationService.EditReservation(dto);
+            }
+            catch (ReservationNotFoundException ex)
+            {
+                return NotFound("Reservation not found.");
+            }
+            catch (Exception ex)
+            {
+                return StatusCode(500);
+            }
+
+            return NoContent();
         }
 
         [Route("remove/{id}")]
@@ -82,5 +127,5 @@ namespace SystemService.Controllers
         }
     }
 
-    
+
 }

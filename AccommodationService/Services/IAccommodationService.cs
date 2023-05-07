@@ -10,5 +10,6 @@ namespace AccommodationService.Services
     public interface IAccommodationService
     {
         public Accomodation Edit(string a, string b, int c, string e, string d);
+        Task<Accomodation> Create(AccomodationDto dto);
     }
 }

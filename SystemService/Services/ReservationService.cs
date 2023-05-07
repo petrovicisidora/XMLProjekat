@@ -20,6 +20,46 @@ namespace SystemService.Services
             this.accomodationService = accomodationService;
         }
 
+        public Reservations CreateReservation(CreateReservationDto dto)
+        {
+            using UnitOfWork unitOfWork = new UnitOfWork(_configuration);
+
+            var reservations = unitOfWork.Reservations.GetByAccomodationId(dto.AccmodationId);
+            if (reservations.Any(a => a.Start >= dto.Start && a.Start <= dto.End))
+            {
+                throw new ReservationAlreadyExistisException();
+            }
+
+            var reservation = new Reservations()
+            {
+                AccomodationId = dto.AccmodationId,
+                NumberOfPeople = dto.NumberOfPeople,
+                PricePerAccomodation = dto.PricePerAccomodation,
+                Start = dto.Start,
+                End = dto.End,
+                PricePerGuest = dto.PricePerGuest
+            };
+
+            unitOfWork.Reservations.Add(reservation);
+            return reservation;
+
+        }
+
+        public Reservations EditReservation(EditReservationDto dto)
+        {
+            using UnitOfWork unitOfWork = new UnitOfWork(_configuration);
+
+            var reservation = unitOfWork.Reservations.Get(dto.ReservationId);
+            if (reservation == null)
+            {
+                throw new ReservationNotFoundException();
+            }
+
+            unitOfWork.Reservations.Update(reservation);
+            return reservation;
+
+        }
+
         public Reservations GetById(string reservationId)
         {
             using UnitOfWork unitOfWork = new UnitOfWork(_configuration);
@@ -47,7 +87,7 @@ namespace SystemService.Services
                 throw new ReservationNotFoundException();
             }
 
-            if (reservation.GuestId != null) 
+            if (reservation.GuestId != null)
             {
                 throw new ReservationNotBooked();
             }
@@ -65,7 +105,7 @@ namespace SystemService.Services
         public IEnumerable<Reservations> Find(SearchReservationsDto dto)
         {
             using UnitOfWork unitOfWork = new UnitOfWork(_configuration);
-            
+
 
             if (string.IsNullOrEmpty(dto.Location))
             {

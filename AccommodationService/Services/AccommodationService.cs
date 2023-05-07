@@ -20,7 +20,47 @@ namespace AccommodationService.Services
             this.env = env;
         }
 
-        public Accomodation Edit(string cITYid,string name, int price, string capapcity, string ava)
+        public async Task<Accomodation> Create(AccomodationDto dto)
+        {
+
+            if (dto.Image != null && dto.Image.Length > 0)
+            {
+                var fileName = Path.GetFileName(dto.Image.FileName);
+                var filePath = Path.Combine(env.ContentRootPath, "images", fileName);
+                using (var fileStream = new FileStream(filePath, FileMode.Create))
+                {
+                    await dto.Image.CopyToAsync(fileStream);
+                }
+            }
+
+            try
+            {
+                using UnitOfWork unitOfWork = new UnitOfWork(_configuration);
+
+                Accomodation acc = new()
+                {
+                    Price = dto.Price,
+                    FreeParking = dto.FreeParking,
+                    Location = dto.Location,
+                    MaxCapacity = dto.MaxCapacity,
+                    MinCapacity = dto.MinCapacity,
+                    Name = dto.Name,
+                    WifiIncluded = dto.WifiIncluded,
+                    AcInclude = dto.AcInclude,
+                    ImagePath = string.Empty
+                };
+
+                unitOfWork.Accommodations.Add(acc);
+                return acc;
+            }
+            catch (Exception e)
+            {
+                Console.WriteLine(e);
+                return null;
+            }
+        }
+
+        public Accomodation Edit(string cITYid, string name, int price, string capapcity, string ava)
         {
             try
             {
@@ -35,12 +75,12 @@ namespace AccommodationService.Services
                 unitOfWork.Accommodations.Add(acc);
                 return acc;
             }
-            catch(Exception e)
+            catch (Exception e)
             {
                 Console.WriteLine(e);
                 return null;
             }
-           
+
         }
     }
 }
