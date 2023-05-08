@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Threading.Tasks;
 using SystemService.Configuration;
 using SystemService.Dtos;
 using SystemService.Exceptions;
@@ -102,14 +103,25 @@ namespace SystemService.Services
             unitOfWork.Reservations.Update(reservation);
         }
 
-        public IEnumerable<Reservations> Find(SearchReservationsDto dto)
+        public async Task<IEnumerable<Reservations>> Find(SearchReservationsDto dto)
         {
             using UnitOfWork unitOfWork = new UnitOfWork(_configuration);
+            var accomodationResponse = await accomodationService.GetAccomodations();
+            var accomodations = accomodationResponse.Accomodations.ToList();
 
+            var reservations = unitOfWork.Reservations.Find(r => r.NumberOfPeople == dto.GuestNumber && r.Start >= dto.Start && r.End <= dto.End);
+
+            foreach (var reservation in reservations)
+            {
+                reservation.Accomodation = accomodations.FirstOrDefault(x => x.Id.Equals(reservation.AccomodationId));
+            }
 
             if (string.IsNullOrEmpty(dto.Location))
             {
-
+                reservations = reservations.Where(x => x.Accomodation.City.ToLower().Contains(dto.Location.ToLower()) ||
+                    x.Accomodation.Street.ToLower().Contains(dto.Location.ToLower()) ||
+                    x.Accomodation.State.ToLower().Contains(dto.Location.ToLower())
+                );
             }
 
             if (dto.GuestNumber != 0)
@@ -127,9 +139,7 @@ namespace SystemService.Services
 
             }
 
-            var reservations = unitOfWork.Reservations.Find(r => r.NumberOfPeople == dto.GuestNumber && r.Start >= dto.Start && r.End <= dto.End);
-
-            return Enumerable.Empty<Reservations>();
+            return reservations;
         }
     }
 }

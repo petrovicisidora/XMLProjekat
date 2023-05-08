@@ -8,11 +8,11 @@ namespace SystemService.Services
 {
     public class AccomodationService : IAccomodationService
     {
-        public async  Task<AccomodationResponse> GetAccomodationById(string id)
+        public async  Task<AccomodationResponse> GetAccomodations()
         {
-            using var channel = GrpcChannel.ForAddress("https://localhost:8081");
+            using var channel = GrpcChannel.ForAddress("http://localhost:8081");
             var client = new AccomodationGrpc.AccomodationGrpcClient(channel);
-            var reply = await client.GetAccomodationInfoAsync(new AccomodationRequest() { Id = id });
+            var reply = await client.GetAccomodationInfoAsync(new AccomodationRequest());
             return reply;
         }
     }

@@ -1,4 +1,5 @@
-﻿using System;
+﻿using MongoDB.Bson.Serialization.Attributes;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
@@ -14,5 +15,7 @@ namespace SystemService.Model
         public string GuestId { get; set; }
         public string AccomodationId { get; set; }
         public int NumberOfPeople { get; set; }
+        [BsonIgnore]
+        public Accomodation Accomodation { get; set; }
     }
 }

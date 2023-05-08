@@ -17,20 +17,23 @@ namespace SystemService.Controllers
     public class ReservationsController : BaseController<Reservations>
     {
         private readonly IReservationService reservationService;
+        private readonly IAccomodationService accomodationService;
 
         public ReservationsController(
             ProjectConfiguration configuration,
-            IReservationService reservationService)
+            IReservationService reservationService,
+            IAccomodationService accomodationService)
             : base(configuration)
         {
             this.reservationService = reservationService;
+            this.accomodationService = accomodationService;
         }
 
-        [Route("")]
+        [Route("search")]
         [HttpGet]
-        public IActionResult Search([FromBody] SearchReservationsDto dto)
-        {
-            return Ok();
+        public async Task<IActionResult> Search([FromQuery] SearchReservationsDto dto)
+        { 
+           return Ok(await reservationService.Find(dto));
         }
 
         [Route("add")]

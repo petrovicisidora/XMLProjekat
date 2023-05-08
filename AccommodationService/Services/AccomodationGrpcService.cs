@@ -1,9 +1,7 @@
 ﻿using AccommodationService.Configuration;
-using AccommodationService.Core;
 using AccommodationService.Repositroy;
+using AccomodationService;
 using Grpc.Core;
-using System;
-using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 
@@ -21,16 +19,18 @@ namespace AccommodationService.Services
         public override Task<AccomodationResponse> GetAccomodationInfo(AccomodationRequest request, ServerCallContext context)
         {
             using UnitOfWork unitOfWork = new UnitOfWork(projectConfiguration);
-            var accomodation = unitOfWork.Accommodations.Get(request.Id);
-            return Task.FromResult(new AccomodationResponse()
+            var accomodations = unitOfWork.Accommodations.Find((acc) => true);
+            var accomodationResponse = new AccomodationResponse();
+            accomodationResponse.Accomodations.AddRange(accomodations.Select(x => new Accomodation()
             {
-                Name = accomodation.Name,
-                City = accomodation.Location.City,
-                Street = accomodation.Location.Street,
-                MaxPrice = accomodation.MaxCapacity,
-                MinPrice = accomodation.MinCapacity,
-                State = string.Empty
-            });
+                Name = x.Name,
+                City = x.Location.City,
+                Street = x.Location.Street,
+                MaxPrice = x.MaxCapacity,
+                MinPrice = x.MinCapacity,
+                State = x.Location.State
+            }));
+            return Task.FromResult(accomodationResponse);
         }
     }
 }

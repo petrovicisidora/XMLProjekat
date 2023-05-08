@@ -15,7 +15,7 @@ services:
       dockerfile: ./AccommodationService/Dockerfile
     depends_on: [ mssql ]        
     ports:
-      - "8081:80"
+      - "8081:443"
     networks:
       - database-network
   flight_service:    
@@ -33,7 +33,7 @@ services:
       dockerfile: ./SystemService/Dockerfile
     depends_on: [ mssql ]        
     ports:
-      - "8083:80"
+      - "8083:443"
     networks:
       - database-network
   user_service:    

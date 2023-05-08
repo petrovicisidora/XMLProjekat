@@ -7,14 +7,18 @@ service AccomodationGrpc {
 }
 
 message AccomodationRequest {
-  string id = 1;
 }
 
 message AccomodationResponse {
+  repeated Accomodation accomodations = 1;
+}
+
+message Accomodation {
   string name = 1;
   string street = 2;
   string city = 3;
   string state = 4;
   int32 minPrice = 5;
   int32 maxPrice = 6;
+  string id = 7;
 }
