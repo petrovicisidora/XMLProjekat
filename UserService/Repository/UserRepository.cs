@@ -48,7 +48,8 @@ namespace UserService.Repository
 
         public IEnumerable<User> GetAll()
         {
-            throw new NotImplementedException();
+            
+            return ( _userCollection.Find(x => x.Deleted==false).ToList());
         }
 
         public User GetUserWithEmail(string email)

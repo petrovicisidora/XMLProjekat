@@ -10,6 +10,7 @@ namespace AccommodationService.Services
     public interface IAccommodationService
     {
         public Accomodation Edit(string a, string b, int c, string e, string d);
+        public IEnumerable<Accomodation> GetAll();
         Task<Accomodation> Create(AccomodationDto dto);
     }
 }

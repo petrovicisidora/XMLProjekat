@@ -13,7 +13,7 @@ namespace AccommodationService.Dtos
         public bool FreeParking { get; set; }
         public int MinCapacity { get; set; }
         public int MaxCapacity { get; set; }
-        public IFormFile Image { get; set; }
+        public System.Collections.Generic.IList<IFormFile> Image { get; set; }
 
     }
 }

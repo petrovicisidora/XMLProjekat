@@ -3,7 +3,9 @@ using AccommodationService.Dtos;
 using AccommodationService.Model;
 using AccommodationService.Repositroy;
 using Microsoft.AspNetCore.Hosting;
+using Microsoft.AspNetCore.Http;
 using System;
+using System.Collections.Generic;
 using System.IO;
 using System.Threading.Tasks;
 
@@ -22,17 +24,19 @@ namespace AccommodationService.Services
 
         public async Task<Accomodation> Create(AccomodationDto dto)
         {
-
-            if (dto.Image != null && dto.Image.Length > 0)
-            {
-                var fileName = Path.GetFileName(dto.Image.FileName);
-                var filePath = Path.Combine(env.ContentRootPath, "images", fileName);
-                using (var fileStream = new FileStream(filePath, FileMode.Create))
+            List<byte[]> listt = new List<byte[]>();
+            foreach(IFormFile f in dto.Image) {
+                if (dto.Image != null && f.Length > 0)
                 {
-                    await dto.Image.CopyToAsync(fileStream);
+                   
+                    using (var ms= new MemoryStream())
+                    {
+                        f.CopyTo(ms);
+                        var fileBytes = ms.ToArray();
+                        listt.Add(fileBytes);
+                    }
                 }
             }
-
             try
             {
                 using UnitOfWork unitOfWork = new UnitOfWork(_configuration);
@@ -47,7 +51,7 @@ namespace AccommodationService.Services
                     Name = dto.Name,
                     WifiIncluded = dto.WifiIncluded,
                     AcInclude = dto.AcInclude,
-                    ImagePath = string.Empty
+                    ImagePath = listt
                 };
 
                 unitOfWork.Accommodations.Add(acc);
@@ -60,27 +64,48 @@ namespace AccommodationService.Services
             }
         }
 
-        public Accomodation Edit(string cITYid, string name, int price, string capapcity, string ava)
+        public Accomodation Edit(string a, string b, int c, string e, string d)
+        {
+            throw new NotImplementedException();
+        }
+
+        public IEnumerable<Accomodation> GetAll()
         {
             try
             {
                 using UnitOfWork unitOfWork = new UnitOfWork(_configuration);
-
-                Accomodation acc = new Accomodation();
-                //acc.Capacity = capapcity;
-                acc.Availability = ava;
-                acc.Name = name;
-                acc.Price = price;
-                //acc.CityID = cITYid;
-                unitOfWork.Accommodations.Add(acc);
-                return acc;
+                IEnumerable<Accomodation> accs = unitOfWork.Accommodations.GetAll();
+                return accs;
             }
-            catch (Exception e)
+            catch(Exception e)
             {
-                Console.WriteLine(e);
                 return null;
             }
 
         }
+
+        /*     public Accomodation Edit(string cITYid, string name, int price, string capapcity, string ava)
+             {
+            try
+             {
+                 using UnitOfWork unitOfWork = new UnitOfWork(_configuration);
+
+                 Accomodation acc = new Accomodation();
+                 //acc.Capacity = capapcity;
+                 acc.Availability = ava;
+                 acc.Name = name;
+                 acc.Price = price;
+                 //acc.CityID = cITYid;
+                 unitOfWork.Accommodations.Add(acc);
+                 return acc;
+             }
+             catch (Exception e)
+             {
+                 Console.WriteLine(e);
+                 return null;
+             }
+
+         }
+              */
     }
 }

@@ -49,5 +49,18 @@ namespace AccommodationService.Controllers
 
             return Ok(user); ;
         }
+        [Route("all")]
+        [HttpGet]
+        public async Task<IActionResult> GetAll()
+        {
+
+            IEnumerable<Accomodation> accs =  _accService.GetAll();
+            if (accs == null)
+            {
+                return BadRequest("Accomodation failed to load.");
+            }
+
+            return Ok(accs); ;
+        }
     }
 }

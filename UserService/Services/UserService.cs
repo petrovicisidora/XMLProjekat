@@ -28,7 +28,7 @@ namespace UserService.Services
             }
             catch (Exception e) 
             {
-                return new List<User>();
+                return null;
             }
         }
 

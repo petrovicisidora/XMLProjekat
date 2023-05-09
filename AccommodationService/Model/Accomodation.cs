@@ -15,7 +15,7 @@ namespace AccommodationService.Model
         public bool FreeParking { get; set; }
         public int MinCapacity { get; set; }
         public int MaxCapacity { get; set; }
-        public string ImagePath { get; set; }
+        public List<byte []> ImagePath { get; set; }
 
         public string Availability { get; set; }
 

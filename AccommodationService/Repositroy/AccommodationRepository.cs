@@ -54,7 +54,7 @@ namespace AccommodationService.Repositroy
 
         public IEnumerable<Accomodation> GetAll()
         {
-            throw new NotImplementedException();
+            return _accommodationCollection.Find(_ => true).ToList();
         }
 
         public void Remove(Accomodation entity)
