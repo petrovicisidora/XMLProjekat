@@ -79,7 +79,8 @@ namespace UserService.Repository
 
         public void Update(User entity)
         {
-            throw new NotImplementedException();
+            var filter = Builders<User>.Filter.Eq(u => u.Email, entity.Email);
+            _userCollection.ReplaceOne(filter, entity);
         }
     }
 }

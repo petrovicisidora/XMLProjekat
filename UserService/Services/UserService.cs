@@ -12,6 +12,7 @@ namespace UserService.Services
     public class UserService :IUserService
     {
         private readonly ProjectConfiguration _configuration;
+        private readonly UserRepository userRepository;
 
         public UserService(ProjectConfiguration projectConfiguration)
         {
@@ -60,7 +61,7 @@ namespace UserService.Services
                 return null;
             }
         }
-
+        
         public User Delete(long id)
         {
             try
@@ -82,33 +83,11 @@ namespace UserService.Services
             }
         }
 
-        public User Edit(UserDTO userDTO)
+        public void Update(User user)
         {
-            /*   try
-               {
-                   using UnitOfWork unitOfWork = new UnitOfWork(_configuration);
-                   User user = unitOfWork.Users.Get(userDTO.Id);
 
-                   userDTO.Email = user.Email;
-                   userDTO.Password = user.Password;
-                   userDTO.Name = user.Name;
-                   userDTO.Surname = user.Surname;
-                   userDTO.PhoneNumber = user.PhoneNumber;
-                   userDTO.SSN = user.SSN;
-
-
-                   unitOfWork.Users.Update(user);
-
-
-                   return user;
-               }
-               catch (Exception e)
-               {
-                   return null;
-               }*/
-            return null;
-
-
+            using UnitOfWork unitOfWork = new UnitOfWork(_configuration);
+            unitOfWork.Users.Update(user);
 
         }
 

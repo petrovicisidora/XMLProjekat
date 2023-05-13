@@ -14,6 +14,6 @@ namespace UserService.Services
         IEnumerable<User> GetAll();
         User Get(long Id);
         User Delete(long id);
-        User Edit(UserDTO userDTO);
+        void Update(User user);
     }
 }
