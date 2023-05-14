@@ -10,7 +10,7 @@ using UserService.Model;
 
 namespace UserService.Repository
 {
-    public class UserRepository :  IUserRepository
+    public class UserRepository : IUserRepository
     {
         private readonly IMongoCollection<User> _userCollection;
 
@@ -19,13 +19,14 @@ namespace UserService.Repository
             var mongoClient = new MongoClient(
              projectConfiguration.DatabaseConfiguration.ConnectionString);
 
+
              var mongoDatabase = mongoClient.GetDatabase(
                  projectConfiguration.DatabaseConfiguration.DatabaseName);
 
-           
+       
 
 
-              _userCollection = mongoDatabase.GetCollection<User>("user");
+            _userCollection = mongoDatabase.GetCollection<User>("user");
         }
 
         /*public UserRepository()
@@ -57,8 +58,8 @@ namespace UserService.Repository
 
         public IEnumerable<User> GetAll()
         {
-            
-            return ( _userCollection.Find(x => x.Deleted==false).ToList());
+
+            return (_userCollection.Find(x => x.Deleted == false).ToList());
         }
 
         public User GetUserWithEmail(string email)
@@ -71,7 +72,23 @@ namespace UserService.Repository
             throw new NotImplementedException();
         }
 
-       
+
+        public User GetByEmail(string email)
+        {
+            //var filter = Builders<User>.Filter.Eq(u => u.Email, email);
+            //return _userCollection.Find(filter).FirstOrDefault();
+            //return _userCollection.Find(x => x.Email == email).FirstOrDefault();
+            if (_userCollection == null)
+            {
+                throw new InvalidOperationException("User collection is not initialized.");
+            }
+
+            var filter = Builders<User>.Filter.Eq(a => a.Email, email);
+            var user = _userCollection.Find(filter).FirstOrDefault();
+
+            return user;
+        }
+
 
         public void RemoveRange(IEnumerable<User> entities)
         {
@@ -83,7 +100,6 @@ namespace UserService.Repository
             throw new NotImplementedException();
         }
 
-       
 
         public User SingleOrDefault(Expression<Func<User, bool>> predicate)
         {

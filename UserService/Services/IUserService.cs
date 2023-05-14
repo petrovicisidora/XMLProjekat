@@ -15,5 +15,6 @@ namespace UserService.Services
         User Get(long Id);
         User Delete(long id);
         void Update(User user);
+        User GetByEmail(string email);
     }
 }

@@ -40,13 +40,13 @@ namespace UserService.Services
 
                 return unitOfWork.Users.GetAll();
             }
-            catch (Exception e) 
+            catch (Exception e)
             {
                 return null;
             }
         }
 
-       public User Get(long Id)
+        public User Get(long Id)
         {
             try
             {
@@ -54,13 +54,13 @@ namespace UserService.Services
 
                 return unitOfWork.Users.Get(Id);
             }
-            catch(Exception e)
+            catch (Exception e)
             {
                 return null;
             }
-        } 
+        }
 
-        public User GetUserWithEmail(string email) 
+        public User GetUserWithEmail(string email)
         {
             try
             {
@@ -74,12 +74,12 @@ namespace UserService.Services
                 return unitOfWork.Users.GetUserWithEmail(email);
 
             }
-            catch (Exception e) 
+            catch (Exception e)
             {
                 return null;
             }
         }
-        
+
         public User Delete(long id)
         {
             try
@@ -91,14 +91,20 @@ namespace UserService.Services
                 user.Deleted = true;
 
                 unitOfWork.Users.Update(user);
-           
+
 
                 return user;
             }
-            catch(Exception e)
+            catch (Exception e)
             {
                 return null;
             }
+        }
+
+
+        public User GetByEmail(string email)
+        {
+            return _userRepository.GetByEmail(email);
         }
 
         public void Update(User user)
@@ -112,7 +118,7 @@ namespace UserService.Services
         {
             try
             {
-                if (email == null || password == null || name == null || surname == null || city == null )
+                if (email == null || password == null || name == null || surname == null || city == null)
                 {
                     return null;
                 }
@@ -140,21 +146,21 @@ namespace UserService.Services
                 {
                     user.UserType = UserType.H;
                 }
-              
-                
+
+
 
                 unitOfWork.Users.Add(user);
-               
+
                 return user;
 
             }
-            catch (Exception e) 
+            catch (Exception e)
             {
                 return null;
             }
 
-            
-            
+
+
 
 
         }

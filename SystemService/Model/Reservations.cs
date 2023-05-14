@@ -15,7 +15,7 @@ namespace SystemService.Model
         public string GuestId { get; set; }
         public string AccomodationId { get; set; }
         public int NumberOfPeople { get; set; }
-        [BsonIgnore]
-        public Accomodation Accomodation { get; set; }
+        //[BsonIgnore]
+        //public Accomodation Accomodation { get; set; }
     }
 }
