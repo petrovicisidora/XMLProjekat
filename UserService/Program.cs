@@ -1,3 +1,5 @@
+using AccomodationService;
+using Grpc.Net.Client;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.Hosting;
@@ -16,6 +18,8 @@ namespace UserService
             
             
             CreateHostBuilder(args).Build().Run();
+            var channel = GrpcChannel.ForAddress("https://localhost:5001");
+            var client = new AccommodationGrpc.AccommodationGrpcClient(channel);
         }
 
         public static IHostBuilder CreateHostBuilder(string[] args) =>

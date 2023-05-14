@@ -7,6 +7,7 @@ using Microsoft.AspNetCore.Http;
 using System;
 using System.Collections.Generic;
 using System.IO;
+using System.Linq;
 using System.Threading.Tasks;
 
 namespace AccommodationService.Services
@@ -83,6 +84,36 @@ namespace AccommodationService.Services
             }
 
         }
+
+        public List<Accomodation> PretraziSmestaj(string lokacija, int brojGostiju, DateTime pocetakPutovanja, DateTime krajPutovanja)
+        {
+            using UnitOfWork unitOfWork = new UnitOfWork(_configuration);
+            var smestaji = unitOfWork.Accommodations.GetAll().Where(s => s.Location.City == lokacija && s.MinCapacity <= brojGostiju && s.MaxCapacity >= brojGostiju).ToList();
+
+            foreach (var smestaj in smestaji)
+            {
+                // Izračunaj ukupnu cenu smeštaja za sva noćenja
+                var brojNocenja = (krajPutovanja - pocetakPutovanja).Days;
+                var ukupnaCena = smestaj.Price * brojNocenja;
+
+                // Izračunaj jediničnu cenu
+                decimal jedinicnaCena;
+                if (smestaj.MaxCapacity == 1)
+                {
+                    jedinicnaCena = smestaj.Price;
+                }
+                else
+                {
+                    jedinicnaCena = ukupnaCena / (decimal)brojNocenja / smestaj.MaxCapacity;
+                }
+
+                // Dodaj informacije o ceni smeštaja
+                smestaj.Availability = $"Ukupna cena: {ukupnaCena}, Jedinična cena: {jedinicnaCena}/noćenju";
+            }
+
+            return smestaji;
+        }
+
 
         /*     public Accomodation Edit(string cITYid, string name, int price, string capapcity, string ava)
              {

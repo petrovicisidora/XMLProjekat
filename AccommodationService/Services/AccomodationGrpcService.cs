@@ -1,36 +1,63 @@
 ﻿using AccommodationService.Configuration;
+using AccommodationService.Core;
+using AccommodationService.Model;
 using AccommodationService.Repositroy;
 using AccomodationService;
 using Grpc.Core;
 using System.Linq;
 using System.Threading.Tasks;
+using Location = AccommodationService.Model.Location;
 
 namespace AccommodationService.Services
 {
-    public class AccomodationGrpcService : AccomodationGrpc.AccomodationGrpcBase
+    public class AccomodationGrpcService  : AccommodationGrpc.AccommodationGrpcBase
     {
-        private readonly ProjectConfiguration projectConfiguration;
+       
+            IAccommodationRepository accommodationRepository = new AccommodationRepository(); // replace with your implementation of IAccommodationRepository
 
-        public AccomodationGrpcService(ProjectConfiguration projectConfiguration)
-        {
-            this.projectConfiguration = projectConfiguration;
-        }
-
-        public override Task<AccomodationResponse> GetAccomodationInfo(AccomodationRequest request, ServerCallContext context)
-        {
-            using UnitOfWork unitOfWork = new UnitOfWork(projectConfiguration);
-            var accomodations = unitOfWork.Accommodations.Find((acc) => true);
-            var accomodationResponse = new AccomodationResponse();
-            accomodationResponse.Accomodations.AddRange(accomodations.Select(x => new Accomodation()
+        
+            public AccomodationGrpcService(IAccommodationRepository repository)
             {
-                Name = x.Name,
-                City = x.Location.City,
-                Street = x.Location.Street,
-                MaxPrice = x.MaxCapacity,
-                MinPrice = x.MinCapacity,
-                State = x.Location.State
-            }));
-            return Task.FromResult(accomodationResponse);
+                accommodationRepository = repository;
+            }
+
+            public AccomodationGrpcService()
+            {
+
+            }
+
+        
+        public override Task<AccommodationResponse> GetAccommodationInfo(AccommodationRequest request, ServerCallContext context)
+            {
+                // Retrieve the accommodation from the database using the ID
+                var accommodation = accommodationRepository.Get(request.Id);
+
+                // If the accommodation is not found, return an error
+                if (accommodation == null)
+                {
+                    throw new RpcException(new Status(StatusCode.NotFound, $"Accommodation with ID '{request.Id}' not found."));
+                }
+
+                // Map the Accommodation entity to AccommodationResponse proto
+                AccommodationResponse response = new AccommodationResponse
+                {
+                    Name = accommodation.Name,
+                    Price = accommodation.Price,
+                    /*Location = new Location
+                    {
+                        Address = accommodation.Location.Address,
+                        City = accommodation.Location.City,
+                        Country = accommodation.Location.Country
+                    },*/
+                    WifiIncluded = accommodation.WifiIncluded,
+                    //AcIncluded = accommodation.AcIncluded,
+                    FreeParking = accommodation.FreeParking,
+                    MinCapacity = accommodation.MinCapacity,
+                    MaxCapacity = accommodation.MaxCapacity,
+                    //ImagePath = { accommodation.ImagePath },
+                    Availability = accommodation.Availability
+                };
+                return Task.FromResult(response);
+            }                     
         }
     }
-}

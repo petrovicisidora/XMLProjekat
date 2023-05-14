@@ -18,11 +18,10 @@ namespace AccommodationService.Repositroy
         {
             this.projectConfiguration = projectConfiguration;
             Accommodations = new AccommodationRepository(projectConfiguration);
+
         }
 
         public IAccommodationRepository Accommodations { get; private set;  }
-
-      
 
         public void Dispose()
         {

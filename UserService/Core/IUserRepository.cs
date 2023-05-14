@@ -9,8 +9,6 @@ namespace UserService.Core
     public interface IUserRepository : IBaseRepository<User>
     {
         User GetUserWithEmail(string email);
-        User Get(long id);
-
-       
+        User Get(long id);   
     }
 }

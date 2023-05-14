@@ -76,10 +76,18 @@ namespace UserService.Controllers
             _userService.Update(user);
             return Ok(user);
         }
-            
-            
-            
-            
-        
+
+        [HttpGet("getemail/{email}")]
+        public IActionResult GetByEmail(string email)
+        {
+            var user = _userService.GetByEmail(email);
+            if (user == null)
+            {
+                return NotFound();
+            }
+            return Ok(user);
+        }
+
+
     }
 }

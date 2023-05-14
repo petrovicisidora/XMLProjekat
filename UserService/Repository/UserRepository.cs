@@ -21,10 +21,19 @@ namespace UserService.Repository
 
              var mongoDatabase = mongoClient.GetDatabase(
                  projectConfiguration.DatabaseConfiguration.DatabaseName);
-            
-        
-            _userCollection = mongoDatabase.GetCollection<User>("user");
+
+           
+
+
+              _userCollection = mongoDatabase.GetCollection<User>("user");
         }
+
+        /*public UserRepository()
+        {
+            var client = new MongoClient("mongodb://localhost:27017");
+            var mongoDatabase = client.GetDatabase("userService");
+            _userCollection = mongoDatabase.GetCollection<User>("user");
+        }*/
 
         public void Add(User entity)
         {
@@ -62,6 +71,8 @@ namespace UserService.Repository
             throw new NotImplementedException();
         }
 
+       
+
         public void RemoveRange(IEnumerable<User> entities)
         {
             throw new NotImplementedException();
@@ -71,6 +82,8 @@ namespace UserService.Repository
         {
             throw new NotImplementedException();
         }
+
+       
 
         public User SingleOrDefault(Expression<Func<User, bool>> predicate)
         {

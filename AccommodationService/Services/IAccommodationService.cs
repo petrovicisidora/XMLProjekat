@@ -12,5 +12,6 @@ namespace AccommodationService.Services
         public Accomodation Edit(string a, string b, int c, string e, string d);
         public IEnumerable<Accomodation> GetAll();
         Task<Accomodation> Create(AccomodationDto dto);
+        List<Accomodation> PretraziSmestaj(string location, int guestNo, DateTime start, DateTime end);
     }
 }

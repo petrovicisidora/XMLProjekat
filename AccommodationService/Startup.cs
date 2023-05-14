@@ -13,7 +13,11 @@ using Microsoft.Extensions.Logging;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using Grpc.Core;
 using System.Threading.Tasks;
+using AccomodationService;
+using AccommodationService.Repositroy;
+using AccommodationService.Core;
 
 namespace AccommodationService
 {
@@ -39,6 +43,8 @@ namespace AccommodationService
             services.AddGrpc();
 
             services.AddScoped<IAccommodationService, Services.AccommodationService>();
+            services.AddScoped<IAccommodationRepository, AccommodationRepository>();
+           
             services.AddCors(o => o.AddPolicy("MyPolicy", builder =>
             {
                 builder.AllowAnyOrigin()
@@ -46,6 +52,8 @@ namespace AccommodationService
                        .AllowAnyHeader();
             }));
         }
+
+        private Server server;
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
         public void Configure(IApplicationBuilder app, IWebHostEnvironment env)
@@ -76,6 +84,13 @@ namespace AccommodationService
                 endpoints.MapControllers();
                 endpoints.MapGrpcService<AccomodationGrpcService>();
             });
+
+            server = new Server
+            {
+                Services = { AccommodationGrpc.BindService(new AccomodationGrpcService()) },
+                Ports = { new ServerPort("localhost", 4112, ServerCredentials.Insecure) }
+            };
+            server.Start();
         }
     }
 }

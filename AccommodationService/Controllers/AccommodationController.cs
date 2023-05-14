@@ -62,5 +62,22 @@ namespace AccommodationService.Controllers
 
             return Ok(accs); ;
         }
+
+        [Route("search")]
+        [HttpGet]
+        public IActionResult SearchAccommodation(string location, int guestsNo, DateTime start, DateTime end)
+        {
+            try
+            {
+                var accommodations = _accService.PretraziSmestaj(location, guestsNo, start, end);
+                return Ok(accommodations);
+            }
+            catch (Exception ex)
+            {
+                // Handle the exception and return an appropriate response
+                return StatusCode(500, "An error occurred while searching for accommodations.");
+            }
+        }
+
     }
 }

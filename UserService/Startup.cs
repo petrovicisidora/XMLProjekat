@@ -17,6 +17,7 @@ using System.Text;
 using System.Threading.Tasks;
 using UserService.Configuration;
 using UserService.Model;
+using UserService.Repository;
 using UserService.Services;
 
 namespace UserService
@@ -36,7 +37,10 @@ namespace UserService
             services.AddControllers();
             services.AddSwaggerGen();
             services.AddScoped<IUserService, Services.UserService>();
-           
+            services.AddScoped<UserRepository>();
+
+            services.AddGrpc();
+
 
             services.Configure<IISServerOptions>(options =>
             {
