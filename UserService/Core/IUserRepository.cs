@@ -10,7 +10,6 @@ namespace UserService.Core
     {
         User GetUserWithEmail(string email);
         User Get(long id);
-
-       
+        User GetByEmail(string email);
     }
 }
