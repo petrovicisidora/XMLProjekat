@@ -19,13 +19,13 @@ namespace AccommodationService.Repositroy
 
         public AccommodationRepository(ProjectConfiguration projectConfiguration)
         {
-            /*var mongoClient = new MongoClient(
+           var mongoClient = new MongoClient(
             projectConfiguration.DatabaseConfiguration.ConnectionString);
 
             var mongoDatabase = mongoClient.GetDatabase(
                 projectConfiguration.DatabaseConfiguration.DatabaseName);
 
-            _accommodationCollection = mongoDatabase.GetCollection<Accomodation>("accommodationService");*/
+            _accommodationCollection = mongoDatabase.GetCollection<Accomodation>("accommodation");
         }
 
         public AccommodationRepository()
