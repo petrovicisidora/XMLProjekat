@@ -104,6 +104,7 @@ namespace UserService.Services
 
         public User GetByEmail(string email)
         {
+            // Implementacija dohvatanja korisnika po e-mail adresi
             return _userRepository.GetByEmail(email);
         }
 

@@ -16,7 +16,7 @@ namespace UserService.Controllers
     {
         private readonly IUserService _userService;
         private readonly ProjectConfiguration _configuration;
-
+        
 
         public UserController(ProjectConfiguration configuration, IUserService userService) : base(configuration, userService)
         {
@@ -40,7 +40,7 @@ namespace UserService.Controllers
 
         [Route("all")]
         [HttpGet]
-        public IActionResult GetAll()
+        public IActionResult GetAll() 
         {
             return Ok(_userService.GetAll());
         }
@@ -61,10 +61,10 @@ namespace UserService.Controllers
 
         [Route("{email}")]
         [HttpPut]
-        public IActionResult Edit(User user, string email)
+        public IActionResult Edit(User user,string email)
         {
             user.Email = email;
-            if (!ModelState.IsValid)
+            if (!ModelState.IsValid) 
             {
                 return BadRequest(ModelState);
             }
@@ -72,7 +72,7 @@ namespace UserService.Controllers
             {
                 return BadRequest("mars");
             }
-
+            
             _userService.Update(user);
             return Ok(user);
         }
@@ -87,6 +87,8 @@ namespace UserService.Controllers
             }
             return Ok(user);
         }
+
+
 
 
     }
