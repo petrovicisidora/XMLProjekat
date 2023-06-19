@@ -31,10 +31,6 @@ namespace FlightService.Controllers
             [HttpPost]
             public IActionResult Login(LoginDTO login)
             {
-                if (login.ClientID != _configuration.ClientID || login.ClientSecret != _configuration.ClientSecret)
-                {
-                    return BadRequest("ClientID or ClientSecret was not correct, please check again.");
-                }
 
                 if (login == null || login.Email == null || login.Password == null)
                 {
@@ -60,8 +56,11 @@ namespace FlightService.Controllers
                 SymmetricSecurityKey key = new(Encoding.UTF8.GetBytes(_configuration.Jwt.Key));
                 SigningCredentials signIn = new(key, SecurityAlgorithms.HmacSha256);
                 JwtSecurityToken token = new(_configuration.Jwt.Issuer, _configuration.Jwt.Audience, claims, expires: DateTime.UtcNow.AddDays(1), signingCredentials: signIn);
+                ResponseLog res = new ResponseLog();
+                res.token = new JwtSecurityTokenHandler().WriteToken(token);
+                res.role = user.UserType;
 
-                return Ok(new JwtSecurityTokenHandler().WriteToken(token));
+                return Ok(res);
             }
         }
     

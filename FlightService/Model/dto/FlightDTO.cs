@@ -11,7 +11,7 @@ namespace FlightService.Model.dto
         public Airport AirportDeparture { get; set; }
         public DateTime DepartureTime { get; set; }
         public DateTime ArrivalTime { get; set; }
-        public String Duration { get; set; }
+      
         public double TicketPrice { get; set; }
         public int Capacity { get; set; }
     }

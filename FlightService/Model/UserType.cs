@@ -2,7 +2,7 @@
 {
     public enum UserType
     {
-         NK, H, G, OK, A
+         OK, A
 
     }
 }

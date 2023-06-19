@@ -15,10 +15,11 @@ namespace FlightService.Controllers
     public class TicketController : BaseController<Ticket>
     {
         private readonly ITicketService _ticketService;
-
-        public TicketController(ProjectConfiguration configuration, IUserService userService, ITicketService ticketService) : base(configuration, userService)
+        private readonly IFlightService _flightService;
+        public TicketController(ProjectConfiguration configuration, IUserService userService, ITicketService ticketService, IFlightService flight) : base(configuration, userService)
         {
             _ticketService = ticketService;
+            _flightService = flight;
         }
 
 
@@ -27,6 +28,16 @@ namespace FlightService.Controllers
         public IActionResult GetAll()
         {
             return Ok(_ticketService.GetAll());
+        }
+        [Route("add")]
+        [HttpPost]
+        public IActionResult AddTicket(TicketDTO dto)
+        {
+            Flight f1=_flightService.Get(dto.FlightID);
+            Ticket t1 = new Ticket();
+            t1.Flight = f1;
+            t1.PassengerID = dto.PassengerID;
+            return Ok(_ticketService.Add(t1, dto.num));
         }
 
         [Route("ticket/{id}")]
@@ -43,11 +54,11 @@ namespace FlightService.Controllers
             return Ok(_ticketService.Delete(id));
         }
 
-        [Route("edit")]
+        [Route("allByUser")]
         [HttpGet]
-        public IActionResult Edit(TicketDTO ticketDTO)
+        public IActionResult GetbyUser([FromQuery] string user)
         {
-            return Ok(_ticketService.Edit(ticketDTO));
+            return Ok(_ticketService.GetbyUser(user));
         }
     }
 }

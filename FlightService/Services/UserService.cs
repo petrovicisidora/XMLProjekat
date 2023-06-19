@@ -40,7 +40,7 @@ namespace FlightService.Services
                 user.Surname = surname;
                 user.PhoneNumber = phoneNumber;
                 user.SSN = ssn;
-
+                user.UserType = UserType.OK;
 
                 unitOfWork.Users.Add(user);
 

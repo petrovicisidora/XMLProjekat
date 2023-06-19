@@ -20,10 +20,14 @@ namespace FlightService.Services
 
         public IEnumerable<Flight> GetAll()
         {
+
+
+         
+
             try
             {
                 using UnitOfWork unitOfWork = new UnitOfWork(_configuration);
-
+               
                 return unitOfWork.Flights.GetAll();
             }
             catch (Exception e)
@@ -52,10 +56,11 @@ namespace FlightService.Services
         {
             try
             {
+                
                 using UnitOfWork unitOfWork = new UnitOfWork(_configuration);
 
+                
                 unitOfWork.Flights.Delete(id);
-
                 return true;
             }
             catch (Exception e)
@@ -75,7 +80,7 @@ namespace FlightService.Services
                 flight.AirportDeparture = flightDTO.AirportDeparture;
                 flight.DepartureTime = flightDTO.DepartureTime;
                 flight.ArrivalTime = flightDTO.ArrivalTime;
-                flight.Duration = flightDTO.Duration;
+        
                 flight.TicketPrice = flightDTO.TicketPrice;
                 flight.Capacity = flightDTO.Capacity;
 
@@ -90,7 +95,7 @@ namespace FlightService.Services
 
         }
 
-        public Flight Create(Airport airportdestination, Airport airportdeparture, DateTime departuretime, DateTime arrivaltime, string duration, double price, int capacity)
+        public Flight Create(Airport airportdestination, Airport airportdeparture, DateTime departuretime, DateTime arrivaltime,  double price, int capacity)
         {
             try
             {
@@ -101,7 +106,7 @@ namespace FlightService.Services
                 flight.AirportDeparture = airportdeparture;
                 flight.DepartureTime = departuretime;
                 flight.ArrivalTime = arrivaltime;
-                flight.Duration = duration;
+            
                 flight.TicketPrice = price;
                 flight.Capacity = capacity;
 

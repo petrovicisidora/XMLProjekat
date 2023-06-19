@@ -33,23 +33,23 @@ namespace FlightService
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
-
             services.AddControllers();
             services.AddSwaggerGen();
+            var config = new ProjectConfiguration();
+            Configuration.Bind("ProjectConfiguration", config);      //  <--- This
+            services.AddSingleton(config);
+
+          
             services.AddScoped<IUserService, UserService>();
             services.AddScoped<IFlightService, FlightService.Services.FlightService>();
             services.AddScoped<IAirportService, AirportService>();
             services.AddScoped<ITicketService, TicketService>();
 
-            services.Configure<IISServerOptions>(options =>
+          /*  services.Configure<IISServerOptions>(options =>
             {
                 options.AutomaticAuthentication = false;
-            });
+            });*/
 
-            var config = new ProjectConfiguration();
-            Configuration.Bind("ProjectConfiguration", config);      //  <--- This
-
-            services.AddSingleton(config);
 
             services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme).AddJwtBearer(options =>
             {

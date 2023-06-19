@@ -15,10 +15,11 @@ namespace FlightService.Controllers
     public class FlightController : BaseController<Flight>
     {
         private readonly IFlightService _flightService;
-
-        public FlightController(ProjectConfiguration configuration, IUserService userService, IFlightService flightService) : base(configuration, userService)
+        private readonly ITicketService _ticketService;
+        public FlightController(ProjectConfiguration configuration, IUserService userService, IFlightService flightService, ITicketService ticketService) : base(configuration, userService)
         {
             _flightService = flightService;
+            _ticketService = ticketService;
         }
 
 
@@ -40,6 +41,7 @@ namespace FlightService.Controllers
         [HttpGet]
         public IActionResult Delete(string id)
         {
+            _ticketService.FlightDeleted(id);
             return Ok(_flightService.Delete(id));
         }
 
@@ -54,7 +56,7 @@ namespace FlightService.Controllers
         [HttpPost]
         public IActionResult Registration(FlightDTO flightdto)
         {
-            Flight flight = _flightService.Create(flightdto.AirportDestination, flightdto.AirportDeparture, flightdto.DepartureTime, flightdto.ArrivalTime, flightdto.Duration, flightdto.TicketPrice, flightdto.Capacity);
+            Flight flight = _flightService.Create(flightdto.AirportDestination, flightdto.AirportDeparture, flightdto.DepartureTime, flightdto.ArrivalTime,  flightdto.TicketPrice, flightdto.Capacity);
 
             if (flight == null)
             {

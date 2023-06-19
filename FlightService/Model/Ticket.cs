@@ -7,10 +7,8 @@ namespace FlightService.Model
 {
     public class Ticket : Entity
     {
-        public Airport Airport { get; set; }
+        public Flight Flight { get; set; }
         public string PassengerID { get; set; }
-        public Boolean IsReturning { get; set; }
-        public Flight OneWayFlight { get; set; }
-        public Flight ReturningFlight { get; set; }
+      
     }
 }

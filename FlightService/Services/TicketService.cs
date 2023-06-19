@@ -65,28 +65,62 @@ namespace FlightService.Services
             }
         }
 
-        public Ticket Edit(TicketDTO ticketDTO)
+        
+
+        public Ticket Add(Ticket t, int num)
         {
             try
             {
                 using UnitOfWork unitOfWork = new UnitOfWork(_configuration);
-                Ticket ticket = unitOfWork.Tickets.Get(ticketDTO.Id);
-
-                ticket.Airport = ticketDTO.Airport;
-                ticket.PassengerID = ticketDTO.PassengerID;
-                ticket.IsReturning = ticketDTO.IsReturning;
-                ticket.OneWayFlight = ticketDTO.OneWayFlight;
-                ticket.ReturningFlight = ticketDTO.ReturningFlight;
-
-                unitOfWork.Tickets.Update(ticket);
-
-                return ticket;
+                for(int i = 0; i < num; i++) {
+                    Ticket tt = new Ticket();
+                    tt.Flight = t.Flight;
+                    tt.PassengerID = t.PassengerID;
+                    unitOfWork.Tickets.Add(tt);
+                }
+                
+                Flight e = new Flight();
+                e = t.Flight;
+                e.Capacity = t.Flight.Capacity - num;
+                unitOfWork.Flights.Update(e);
+                return t;
             }
             catch (Exception e)
             {
                 return null;
             }
+        }
 
+        public bool FlightDeleted(string id)
+        {
+            IEnumerable<Ticket> ticks = GetAll();
+            List<Ticket> tt=ticks.ToList();
+            foreach(Ticket t in tt)
+            {
+                if (t.Flight.Id == id)
+                {
+                    Delete(t.Id);
+                }
+            }
+
+            return true;
+
+        }
+
+        public IEnumerable<Flight> GetbyUser(string user)
+        {
+            IEnumerable<Ticket> ticks = GetAll();
+        
+            List<Ticket> tt = ticks.ToList();
+            List<Flight> ttr = new List<Flight>();
+            foreach (Ticket t in tt)
+            {
+                if (t.PassengerID == user)
+                {
+                    ttr.Add(t.Flight);
+                }
+            }
+            return ttr;
         }
     }
 }

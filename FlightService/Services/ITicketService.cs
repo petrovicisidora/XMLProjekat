@@ -12,6 +12,9 @@ namespace FlightService.Services
         IEnumerable<Ticket> GetAll();
         Ticket Get(string Id);
         Boolean Delete(string id);
-        Ticket Edit(TicketDTO ticketDTO);
+        Ticket Add(Ticket t, int num);
+        bool FlightDeleted(string id);
+
+        IEnumerable<Flight> GetbyUser(string user);
     }
 }

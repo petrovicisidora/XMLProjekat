@@ -13,7 +13,7 @@ namespace FlightService.Services
         Flight Get(string Id);
         Boolean Delete(string id);
         Flight Edit(FlightDTO flightDTO);
-        Flight Create(Airport airportdestination, Airport airportdeparture, DateTime departuretime, DateTime arrivaltime, string duration, double price, int capacity);
+        Flight Create(Airport airportdestination, Airport airportdeparture, DateTime departuretime, DateTime arrivaltime, double price, int capacity);
 
     }
 }
